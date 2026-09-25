@@ -1,25 +1,15 @@
-package example.myapp
+open class Aquarium (open var length: Int = 100, open var width: Int = 20, open var height: Int = 40) {
+    open var volume: Int
+        get() = width * height * length / 1000
+        set(value) {
+            height = (value * 1000) / (width * length)
+        }
 
-class Aquarium {
-    var width: Int = 20
-    var height: Int = 40
-    var length: Int = 100
+    open val shape = "rectangle"
+    open var water: Double = 0.0
+        get() = volume * 0.9
 
-    fun printSize() {
-        println("Width: $width cm " +
-                "Length: $length cm " +
-                "Height: $height cm ")
-    }
 }
-
-fun buildAquarium() {
-    val myAquarium = Aquarium()
-    myAquarium.printSize()
-    myAquarium.height = 60
-    myAquarium.printSize()
-}
-
-
 fun main() {
-    buildAquarium()
+    Aquarium()
 }
