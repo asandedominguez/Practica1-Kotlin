@@ -1,15 +1,25 @@
-open class Aquarium (open var length: Int = 100, open var width: Int = 20, open var height: Int = 40) {
-    open var volume: Int
-        get() = width * height * length / 1000
-        set(value) {
-            height = (value * 1000) / (width * length)
-        }
+data class Decoration2(val rocks: String, val wood: String, val diver: String)
 
-    open val shape = "rectangle"
-    open var water: Double = 0.0
-        get() = volume * 0.9
-
+fun evaluarColor(parametro: String): Any {
+    if (parametro == "blanco") return "string"
+    if (parametro == "negro") return "color"
+    return 1
 }
+
+fun makeDecorations() {
+    val d5 = Decoration2("crystal", "wood", "diver")
+    println(d5)
+
+    val (rock, wood, diver) = d5
+    println(rock)
+    println(wood)
+    println(diver)
+}
+
 fun main() {
-    Aquarium()
+    makeDecorations()
+
+    println(evaluarColor("blanco")) // Devuelve "string"
+    println(evaluarColor("negro"))  // Devuelve "color"
+    println(evaluarColor("rojo"))   // Devuelve el número 1
 }
