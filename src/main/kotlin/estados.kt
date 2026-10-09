@@ -20,18 +20,18 @@ sealed class CoffeeMachineState {
     }
 
     data class E6_SeleccionCantidadAzucar(val bebida: String) : CoffeeMachineState() {
-        init { println("[E6] Estado: Nivel de azúcar (Elige nivel 1-5)") }
+        init { println("[E6] Estado: Nivel de azúcar") }
     }
 
     data class E7_ErrorSinAzucar(val bebida: String) : CoffeeMachineState() {
-        init { println("[E7] Estado: Error (No queda azúcar en la máquina)") }
+        init { println("[E7] Estado: Error ") }
     }
 
     data class E8_PreparacionConAzucar(val bebida: String, val nivelAzucar: Int) : CoffeeMachineState() {
-        init { println("[E8] Estado: Preparación con azúcar ($bebida con azúcar nivel $nivelAzucar...)") }
+        init { println("[E8] Estado: Preparación con azúcar") }
     }
 
     data class E9_RecogerCafe(val bebida: String) : CoffeeMachineState() {
-        init { println("[E9] Estado: Recoger café ($bebida listo en la bandeja)") }
+        init { println("[E9] Estado: Recoger café ") }
     }
 }
