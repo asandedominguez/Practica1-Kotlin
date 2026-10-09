@@ -1,59 +1,37 @@
-var estado = 1
-
-fun gestorDeEstado(a: Boolean, b: Boolean): Int {
-    if (estado == 1) {
-        if (a) {
-            estado = 2
-        } else {
-            estado = 1
-        }
-    } else if (estado == 2) {
-        if (b) {
-            estado = 3
-        } else {
-            estado = 4
-            println("Pasó brevemente por el Estado: $estado")
-            estado = 1
-        }
+sealed class CoffeeMachineState {
+    object E1_Idle : CoffeeMachineState() {
+        init { println("[E1] Estado: Idle ") }
     }
 
-    if (estado == 3) {
-        println("Estado: ${estado} FIN")
-        estado = 0
+    object E2_SeleccionBebida : CoffeeMachineState() {
+        init { println("[E2] Estado: Selección de bebida ") }
     }
 
-    return estado
-}
+    data class E3_NoHayBebida(val bebidaId: Int) : CoffeeMachineState() {
+        init { println("[E3] Estado: No hay bebida") }
+    }
 
-fun main() {
-    println("--- TEST 1 ---")
-    estado = 1
-    println("Resultado T, F: ${gestorDeEstado(a = true, b = false)}")
-    println("Resultado T, F: ${gestorDeEstado(a = true, b = false)}")
+    data class E4_SeleccionAzucar(val bebida: String) : CoffeeMachineState() {
+        init { println("[E4] Estado: Selección de azúcar para $bebida ") }
+    }
 
-    println("\n--- TEST 2 ---")
-    estado = 1
-    println("Resultado T, T: ${gestorDeEstado(a = true, b = true)}")
-    println("Resultado F, F: ${gestorDeEstado(a = false, b = false)}")
+    data class E5_PreparacionSinAzucar(val bebida: String) : CoffeeMachineState() {
+        init { println("[E5] Estado: Preparación sin azúcar ($bebida en proceso...)") }
+    }
 
-    println("\n--- TEST 3 ---")
-    estado = 1
-    println("Resultado T, F: ${gestorDeEstado(a = true, b = false)}")
-    println("Resultado F, T: ${gestorDeEstado(a = false, b = true)}")
-    println("Verificación (Parado): ${gestorDeEstado(a = true, b = true)}")
+    data class E6_SeleccionCantidadAzucar(val bebida: String) : CoffeeMachineState() {
+        init { println("[E6] Estado: Nivel de azúcar (Elige nivel 1-5)") }
+    }
 
-    println("\n--- TEST 4 ---")
-    estado = 1
-    println("Resultado F, T: ${gestorDeEstado(a = false, b = true)}")
+    data class E7_ErrorSinAzucar(val bebida: String) : CoffeeMachineState() {
+        init { println("[E7] Estado: Error (No queda azúcar en la máquina)") }
+    }
 
-    println("\n--- TEST 5 ---")
-    estado = 1
-    println("Resultado T, T: ${gestorDeEstado(a = true, b = true)}")
-    println("Resultado T, T: ${gestorDeEstado(a = true, b = true)}")
-    println("Verificación (Parado): ${gestorDeEstado(a = true, b = true)}")
+    data class E8_PreparacionConAzucar(val bebida: String, val nivelAzucar: Int) : CoffeeMachineState() {
+        init { println("[E8] Estado: Preparación con azúcar ($bebida con azúcar nivel $nivelAzucar...)") }
+    }
 
-    println("\n--- TEST 6 ---")
-    estado = 1
-    println("Resultado T, T: ${gestorDeEstado(a = true, b = true)}")
-    println("Resultado F, F: ${gestorDeEstado(a = false, b = true)}")
+    data class E9_RecogerCafe(val bebida: String) : CoffeeMachineState() {
+        init { println("[E9] Estado: Recoger café ($bebida listo en la bandeja)") }
+    }
 }
