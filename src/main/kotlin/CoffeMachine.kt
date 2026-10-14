@@ -1,54 +1,58 @@
+package org.example
+
+enum class CoffeeMachineState {
+    Idle,
+    MakingCoffee,
+    ServingCoffee,
+    Error
+}
+
 object CoffeeMachine {
-    var currentState: CoffeeMachineState = CoffeeMachineState.E1_Idle
+    var currentState: CoffeeMachineState = CoffeeMachineState.Idle
 
-    fun makeCoffee() {
-        when (val state = currentState) {
-            is CoffeeMachineState.E1_Idle -> {
-                println("Máquina lista")
+    private fun advanceState() {
+        val nextIndex = currentState.ordinal + 1
+        if (nextIndex < CoffeeMachineState.entries.size) {
+            currentState = CoffeeMachineState.entries[nextIndex]
+        }
+    }
 
-                currentState = CoffeeMachineState.E2_SeleccionBebida
-                println("Estado actual: $currentState")
+    fun gestorEstados() {
+        println("Estado actual: $currentState")
 
-                Thread.sleep(1500)
-                println("selección de bebida")
+        when (currentState) {
+            CoffeeMachineState.Idle -> {
+                println("Máquina en estado IDLE")
+                Thread.sleep(2000)
+                advanceState()
+                println("¡Me pongo a preparar tu café! Estado: $currentState")
             }
-            is CoffeeMachineState.E2_SeleccionBebida -> {
-                println("La máquina está en selección de bebida.")
+            CoffeeMachineState.MakingCoffee -> {
+                println("¡Estoy haciendo café! Por favor, espera...")
+                Thread.sleep(2000)
+                advanceState()
             }
-            is CoffeeMachineState.E3_NoHayBebida -> {
-                println("No hay bebida disponible.")
+            CoffeeMachineState.ServingCoffee -> {
+                println("Ya hay café servido. Por favor, toma tu café.")
+                clean()
             }
-            is CoffeeMachineState.E4_SeleccionAzucar -> {
-                println("Selección de azúcar")
-            }
-            is CoffeeMachineState.E5_PreparacionSinAzucar -> {
-                println("Preparando café sin azúcar")
-            }
-            is CoffeeMachineState.E6_SeleccionCantidadAzucar -> {
-                println("Seleccionando cantidad de azúcar")
-            }
-            is CoffeeMachineState.E7_ErrorSinAzucar -> {
-                println("Error: Sin azúcar")
-            }
-            is CoffeeMachineState.E8_PreparacionConAzucar -> {
-                println("Preparando café con azúcar")
-            }
-            is CoffeeMachineState.E9_RecogerCafe -> {
-                println("Café listo")
+            CoffeeMachineState.Error -> {
+                println("La máquina tiene un error")
             }
         }
     }
 
     fun clean() {
-        println("LIMPIANDO")
-        currentState = CoffeeMachineState.E1_Idle
+        println("Limpiando la máquina...")
+        currentState = CoffeeMachineState.Idle
+        println("Máquina limpia. Estado: $currentState")
     }
 }
 
 fun main() {
-    println("Intentando hacer café la primera vez")
-    CoffeeMachine.makeCoffee()
-    println("Intentando hacer otro café")
-    CoffeeMachine.makeCoffee()
-    CoffeeMachine.clean()
+    CoffeeMachine.gestorEstados()
+    println()
+    CoffeeMachine.gestorEstados()
+    println()
+    CoffeeMachine.gestorEstados()
 }
