@@ -1,14 +1,13 @@
 package org.example
 
 enum class CoffeeMachineState {
-    Idle,
-    MakingCoffee,
-    ServingCoffee,
-    Error
+    E1_Idle,
+    E2_SeleccionBebida,
+    E3_NoHayBebida
 }
 
 object CoffeeMachine {
-    var currentState: CoffeeMachineState = CoffeeMachineState.Idle
+    var currentState: CoffeeMachineState = CoffeeMachineState.E1_Idle
 
     private fun advanceState() {
         val nextIndex = currentState.ordinal + 1
@@ -21,30 +20,27 @@ object CoffeeMachine {
         println("Estado actual: $currentState")
 
         when (currentState) {
-            CoffeeMachineState.Idle -> {
-                println("Máquina en estado IDLE")
+            CoffeeMachineState.E1_Idle -> {
+                println("Máquina en estado IDLE (Lista para recibir selección)")
                 Thread.sleep(2000)
                 advanceState()
-                println("¡Me pongo a preparar tu café! Estado: $currentState")
+                println("Pasando a selección. Estado: $currentState")
             }
-            CoffeeMachineState.MakingCoffee -> {
-                println("¡Estoy haciendo café! Por favor, espera...")
+            CoffeeMachineState.E2_SeleccionBebida -> {
+                println("La máquina está en selección de bebida")
                 Thread.sleep(2000)
                 advanceState()
             }
-            CoffeeMachineState.ServingCoffee -> {
-                println("Ya hay café servido. Por favor, toma tu café.")
+            CoffeeMachineState.E3_NoHayBebida -> {
+                println("No hay bebida disponible.")
                 clean()
-            }
-            CoffeeMachineState.Error -> {
-                println("La máquina tiene un error")
             }
         }
     }
 
     fun clean() {
         println("Limpiando la máquina...")
-        currentState = CoffeeMachineState.Idle
+        currentState = CoffeeMachineState.E1_Idle
         println("Máquina limpia. Estado: $currentState")
     }
 }
